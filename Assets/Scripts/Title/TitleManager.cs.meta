@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d9891e3bfafbd00439e9187963043bb3
+timeCreated: 1495430241
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - Cloud_Object: {instanceID: 0}
+  - BG_Object: {instanceID: 0}
+  - Logo_Object: {instanceID: 0}
+  - Press_Object: {instanceID: 0}
+  - TitleMenu_Object: {fileID: 1292163386537696, guid: 9fc25ed7637fc654d9a785e16cd87331,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
