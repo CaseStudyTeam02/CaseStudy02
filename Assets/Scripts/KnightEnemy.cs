@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KnightEnemy : MonoBehaviour {
-
-    public EnemyStruct.ENemyStatus status;
+public class KnightEnemy : Enemy {
 
     private float rotVec;
 

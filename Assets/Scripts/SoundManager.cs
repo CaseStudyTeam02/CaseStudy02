@@ -38,6 +38,10 @@ public class SoundManager : MonoBehaviour{
     //声
     static AudioClip[] Voice;
 
+    static Dictionary<string, int> BGMData;
+    static Dictionary<string, int> SEData;
+    static Dictionary<string, int> VoiceData;
+
     //音量
     public static SoundVolume volume = new SoundVolume();
 
@@ -105,6 +109,27 @@ public class SoundManager : MonoBehaviour{
         BGMSource.Play();
     }
 
+    public static void PlayBGM(string fileName)
+    {
+        //存在しないファイル名を指定した場合は何もしない
+        if(BGMData.ContainsKey(fileName) == false)
+        {
+            return;
+        }
+
+        int index = BGMData[fileName];
+
+        //同じBGMを使用している場合は何もしない
+        if(BGMSource.clip == BGM[index])
+        {
+            return;
+        }
+
+        BGMSource.Stop();
+        BGMSource.clip = BGM[index];
+        BGMSource.Play();
+    }
+
     //BGM停止
     public static void StopBGM()
     {
@@ -125,6 +150,28 @@ public class SoundManager : MonoBehaviour{
         foreach(AudioSource source in SESources)
         {
             if(!source.isPlaying)
+            {
+                source.clip = SE[index];
+                source.Play();
+                return;
+            }
+        }
+    }
+
+    public static void PlaySE(string fileName)
+    {
+        //存在しないファイル名を指定した場合は何もしない
+        if (SEData.ContainsKey(fileName) == false)
+        {
+            return;
+        }
+
+        int index = SEData[fileName];
+
+        //再生中でないオーディオソースを検索し使用する
+        foreach (AudioSource source in SESources)
+        {
+            if (!source.isPlaying)
             {
                 source.clip = SE[index];
                 source.Play();
@@ -164,6 +211,28 @@ public class SoundManager : MonoBehaviour{
         }
     }
 
+    public static void PlayVoice(string fileName)
+    {
+        //存在しないファイル名を指定した場合は何もしない
+        if (VoiceData.ContainsKey(fileName) == false)
+        {
+            return;
+        }
+
+        int index = VoiceData[fileName];
+
+        //再生中でないオーディオソースを検索し使用する
+        foreach (AudioSource source in VoiceSources)
+        {
+            if (!source.isPlaying)
+            {
+                source.clip = Voice[index];
+                source.Play();
+                return;
+            }
+        }
+    }
+
     //全ての声を停止する
     public static void StopVoice()
     {
@@ -175,11 +244,71 @@ public class SoundManager : MonoBehaviour{
     }
 
     //
-    public static void SetSound()
+    static void SetSound()
     {
         BGM = Resources.LoadAll<AudioClip>("Sound/BGM/");
         SE = Resources.LoadAll<AudioClip>("Sound/SE/");
         Voice = Resources.LoadAll<AudioClip>("Sound/Voice/");
+        GetFileName();
+    }
+
+    static void GetFileName()
+    {
+        string[] filePath;
+        string path = Application.dataPath + "/Resources/Sound/";
+
+        BGMData = new Dictionary<string, int>();
+        SEData = new Dictionary<string, int>();
+        VoiceData = new Dictionary<string, int>();
+
+        int count = 0;
+
+        filePath = System.IO.Directory.GetFiles(path + "BGM/", "*.wav");
+        for(int i = 0; i < filePath.Length; i++)
+        {
+            string str = filePath[i].Replace(path + "BGM/", "");
+            BGMData.Add(str,i);
+            count++;
+        }
+
+        filePath = System.IO.Directory.GetFiles(path + "BGM/", "*.mp3");
+        for (int i = 0; i < filePath.Length; i++)
+        {
+            string str = filePath[i].Replace(path + "BGM/", "");
+            BGMData[str] = i + count;
+        }
+
+        count = 0;
+        filePath = System.IO.Directory.GetFiles(path + "SE/", "*.wav");
+        for (int i = 0; i < filePath.Length; i++)
+        {
+            string str = filePath[i].Replace(path + "SE/", "");
+            SEData[str] = i;
+            count++;
+        }
+
+        filePath = System.IO.Directory.GetFiles(path + "SE/", "*.mp3");
+        for (int i = 0; i < filePath.Length; i++)
+        {
+            string str = filePath[i].Replace(path + "SE/", "");
+            SEData[str] = i + count;
+        }
+
+        count = 0;
+        filePath = System.IO.Directory.GetFiles(path + "Voice/", "*.wav");
+        for (int i = 0; i < filePath.Length; i++)
+        {
+            string str = filePath[i].Replace(path + "Voice/", "");
+            BGMData[str] = i;
+            count++;
+        }
+
+        filePath = System.IO.Directory.GetFiles(path + "Voice/", "*.mp3");
+        for (int i = 0; i < filePath.Length; i++)
+        {
+            string str = filePath[i].Replace(path + "Voice/", "");
+            BGMData[str] = i + count;
+        }
     }
 
     public static void SetBGMVolume(float volume)
