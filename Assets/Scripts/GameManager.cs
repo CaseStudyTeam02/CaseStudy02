@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum EnemyId
+public enum EnemyId
 {
-    NormalEnemy = 0,
-    ThormEnemy,
-    BarrierEnemy,
+    YellowNormalEnemy = 0,
+    BlueNormalENemy,
+    RedNormalENemy,
+    YellowThormEnemy,
+    BlueThormENemy,
+    YellowBarrierEnemy,
+    BlueBarrierEnemy,
     Enemy_Max
 };
 
